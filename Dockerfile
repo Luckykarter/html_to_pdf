@@ -1,6 +1,7 @@
 FROM python:3.9-slim as html_to_pdf
 ENV PYTHONUNBUFFERED=1
-RUN apt-get update && apt-get install -y git wkhtmltopdf
+RUN sed -Ei 's/main$/main contrib/' /etc/apt/sources.list
+RUN apt-get update && apt-get install -y git wkhtmltopdf ttf-mscorefonts-installer
 
 COPY requirements.txt /tmp/
 RUN pip install -r /tmp/requirements.txt
