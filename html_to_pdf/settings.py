@@ -28,7 +28,7 @@ if os.path.isfile(dotenv_file):
 SECRET_KEY = os.getenv('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = os.environ.get('DEBUG_VALUE') == 'TRUE'
 
 ALLOWED_HOSTS = ['*']
 
@@ -74,6 +74,9 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'html_to_pdf.wsgi.application'
 
+if not DEBUG:
+    SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+    SECURE_SSL_REDIRECT = True
 
 # Database
 # https://docs.djangoproject.com/en/3.2/ref/settings/#databases
