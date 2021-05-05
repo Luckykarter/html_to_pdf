@@ -6,6 +6,7 @@ from rest_framework.decorators import api_view, permission_classes
 import time
 
 TEMPLATE = 'html_to_pdf/templates/template.html'
+FOLDER = 'html_to_pdf/templates/'
 TEST_TEMPLATE = 'html_to_pdf/templates/test_template.html'
 
 
@@ -15,19 +16,31 @@ def test_pdf(request, **kwargs):
 
 @api_view(['POST'])
 def make_pdf(request, **kwargs):
-    files = request.FILES
-    file = request.FILES.get('template')
-    with open(TEMPLATE, 'wb') as f:
-        if file.multiple_chunks:
-            for c in file.chunks():
-                f.write(c)
-        else:
-            f.write(file.read())
-    response = make_pdf_from_html(TEMPLATE, context=request.POST)
+    template_filename = ''
+    context = request.POST.copy()
+    context['image_path'] = os.path.abspath(FOLDER)
+    folder = os.path.join(FOLDER, str(time.time()).replace('.', ''))
+    os.mkdir(folder)
+    filenames = set()
+    for file_tag in request.FILES:
+        file = request.FILES.get(file_tag)
+        filename = os.path.join(folder, file.name)
+        if file_tag == 'template':
+            template_filename = filename
 
-    os.remove(TEMPLATE)
+        filenames.add(filename)
+        with open(filename, 'wb') as f:
+            if file.multiple_chunks:
+                for c in file.chunks():
+                    f.write(c)
+            else:
+                f.write(file.read())
+
+    response = make_pdf_from_html(template_filename, context=context)
+    for filename in filenames:
+        os.remove(filename)
+    os.rmdir(folder)
     return response
-
 
 def make_pdf_from_html(template_file, context):
     with open(template_file, 'r') as f:
