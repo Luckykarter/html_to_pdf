@@ -18,8 +18,8 @@ def test_pdf(request, **kwargs):
 def make_pdf(request, **kwargs):
     template_filename = ''
     context = request.POST.copy()
-    context['image_path'] = os.path.abspath(FOLDER)
     folder = os.path.join(FOLDER, str(time.time()).replace('.', ''))
+    context['image_path'] = os.path.abspath(folder)
     os.mkdir(folder)
     filenames = set()
     for file_tag in request.FILES:
