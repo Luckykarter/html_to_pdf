@@ -5,3 +5,5 @@ pdfkit==0.6.1
 pytz==2021.1
 sqlparse==0.4.1
 python-dotenv==0.15.0
+gunicorn==19.9.0
+

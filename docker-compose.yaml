@@ -3,6 +3,38 @@ services:
   html_to_pdf:
     build:
       context: .
-    command: python manage.py runserver 0.0.0.0:8000
+    command: gunicorn html_to_pdf.wsgi --workers=9 --log-file=- --log-level=debug --keep-alive=600 --timeout=600 --bind 0.0.0.0:8000
+    depends_on:
+      - mysql
     ports:
-      - "8000:8000"
+      - 8000:8000
+    volumes:
+      - static_volume:/app/static
+      - media_volume:/app/media
+
+  nginx:
+    build: ./nginx
+    volumes:
+      - static_volume:/app/static
+      - media_volume:/app/media
+    ports:
+      - 80:80
+    depends_on:
+      - html_to_pdf
+
+
+  mysql:
+    image: mysql:5.7
+    command: --default-authentication-plugin=mysql_native_password
+    container_name: mysql
+    environment:
+      - MYSQL_ROOT_PASSWORD=${DB_PASSWORD}
+      - MYSQL_DATABASE=${DB_NAME}
+    volumes:
+      - /etc/mysql.cnf:/app/config/mysql.cnf
+      - /var/lib/mysql:/var/lib/mysql
+
+
+volumes:
+  static_volume:
+  media_volume:

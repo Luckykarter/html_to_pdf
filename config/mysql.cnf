@@ -1,0 +1,23 @@
+#/etc/my.cnf
+
+# For advice on how to change settings please see
+# http://dev.mysql.com/doc/refman/5.7/en/server-configuration-defaults.html
+
+[mysqld]
+server-id           = 1
+datadir             = /var/lib/mysql
+log_bin             = /var/log/mysql/mysql-bin.log
+log_bin_index       = /var/log/mysql/mysql-bin.log.index
+relay_log           = /var/log/mysql/mysql-relay-bin
+relay_log_index     = /var/log/mysql/mysql-relay-bin.index
+expire_logs_days    = 10
+max_binlog_size     = 100M
+log_slave_updates   = 1
+auto-increment-increment = 2
+auto-increment-offset = 1
+
+# Disabling symbolic-links is recommended to prevent assorted security risks
+symbolic-links=0
+max_allowed_packet=500M
+max_connections = 500
+wait_timeout = 2000
