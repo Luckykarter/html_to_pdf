@@ -11,6 +11,7 @@ services:
     volumes:
       - static_volume:/app/static
       - media_volume:/app/media
+    restart: always
 
   nginx:
     build: ./nginx
@@ -21,6 +22,7 @@ services:
       - 84:80
     depends_on:
       - html_to_pdf
+    restart: always
 
 
   mysql:
