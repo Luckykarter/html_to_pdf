@@ -34,7 +34,7 @@ services:
       - MYSQL_DATABASE=${DB_NAME}
     volumes:
       - /etc/mysql.cnf:/app/config/mysql.cnf
-      - /var/lib/mysql:/var/lib/mysql
+      - /var/lib/html_to_pdf/mysql:/var/lib/mysql
     restart: always
 
 volumes:
