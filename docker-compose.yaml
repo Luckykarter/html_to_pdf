@@ -3,9 +3,9 @@ services:
   html_to_pdf:
     build:
       context: .
-    command: gunicorn html_to_pdf.wsgi --workers=9 --log-file=- --log-level=debug --keep-alive=600 --timeout=600 --bind 0.0.0.0:8000
-    depends_on:
-      - mysql
+    command: gunicorn html_to_pdf.wsgi --workers=6 --log-file=- --log-level=debug --keep-alive=600 --timeout=600 --bind 0.0.0.0:8000
+#    depends_on:
+#      - mysql
     ports:
       - 8000:8000
     volumes:
@@ -25,17 +25,17 @@ services:
     restart: always
 
 
-  mysql:
-    image: mysql:5.7
-    command: --default-authentication-plugin=mysql_native_password
-    container_name: mysql_html_to_pdf
-    environment:
-      - MYSQL_ROOT_PASSWORD=${DB_PASSWORD}
-      - MYSQL_DATABASE=${DB_NAME}
-    volumes:
-      - /etc/mysql.cnf:/app/config/mysql.cnf
-      - /var/lib/html_to_pdf/mysql:/var/lib/mysql
-    restart: always
+#  mysql:
+#    image: mysql:5.7
+#    command: --default-authentication-plugin=mysql_native_password
+#    container_name: mysql_html_to_pdf
+#    environment:
+#      - MYSQL_ROOT_PASSWORD=${DB_PASSWORD}
+#      - MYSQL_DATABASE=${DB_NAME}
+#    volumes:
+#      - /etc/mysql.cnf:/app/config/mysql.cnf
+#      - /var/lib/html_to_pdf/mysql:/var/lib/mysql
+#    restart: always
 
 volumes:
   static_volume:

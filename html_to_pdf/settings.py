@@ -81,24 +81,24 @@ if not DEBUG:
 # Database
 # https://docs.djangoproject.com/en/3.2/ref/settings/#databases
 
-if os.getenv('ENVIRONMENT') == 'docker':
-    DATABASES = {
-        'default': {
-            'ENGINE': 'django.db.backends.mysql',
-            'NAME': os.environ['DB_NAME'],
-            'USER': 'root',
-            'PASSWORD': os.environ['DB_PASSWORD'],
-            'HOST': 'mysql',
-            'PORT': '3306',
-        }
+# if os.getenv('ENVIRONMENT') == 'docker':
+#     DATABASES = {
+#         'default': {
+#             'ENGINE': 'django.db.backends.mysql',
+#             'NAME': os.environ['DB_NAME'],
+#             'USER': 'root',
+#             'PASSWORD': os.environ['DB_PASSWORD'],
+#             'HOST': 'mysql',
+#             'PORT': '3306',
+#         }
+#     }
+# else:
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': BASE_DIR / 'db.sqlite3',
     }
-else:
-    DATABASES = {
-        'default': {
-            'ENGINE': 'django.db.backends.sqlite3',
-            'NAME': BASE_DIR / 'db.sqlite3',
-        }
-    }
+}
 
 
 
